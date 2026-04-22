@@ -3,7 +3,7 @@
 
 void init(Queue* q) {
     q->front = nullptr;
-    q->rear  = nullptr;
+    q->rear = nullptr;
 }
 
 bool isEmpty(const Queue* q) {
@@ -12,46 +12,50 @@ bool isEmpty(const Queue* q) {
 
 bool isFull(const Queue* q) {
     if (isEmpty(q)) return false;
-    int* nextRear = q->rear + 1;
-    if (nextRear == q->data + MAX) 
-    return nextRear == q->front;
+    int frontIndex = q->front - q->data;
+    int rearIndex  = q->rear  - q->data;
+
+    return (rearIndex + 1) % MAX == frontIndex;
 }
 
 void enqueue(Queue* q, int value) {
     if (isFull(q)) {
-        throw std::overflow_error("queue penuh, cannot enqueue");
+        throw std::runtime_error("Queue full");
     }
+
     if (isEmpty(q)) {
-        q->front = q->rear = q->data;
+        q->front = q->rear = &q->data[0];
+        *q->rear = value;
     } else {
-        q->rear++;
-        if (q->rear == q->data + MAX) q->rear = q->data;
+        int rearIndex = (q->rear - q->data + 1) % MAX;
+        q->rear = &q->data[rearIndex];
+        *q->rear = value;
     }
-    *(q->rear) = value;
 }
 
 void dequeue(Queue* q) {
     if (isEmpty(q)) {
-        throw std::underflow_error("queue kosong, cannot dequeue");
+        throw std::runtime_error("Queue empty");
     }
+
     if (q->front == q->rear) {
-        q->front = q->rear = nullptr;
-        return;
+        init(q);
+    } else {
+        int frontIndex = (q->front - q->data + 1) % MAX;
+        q->front = &q->data[frontIndex];
     }
-    q->front++;
-    if (q->front == q->data + MAX) q->front = q->data;
 }
 
 int front(const Queue* q) {
     if (isEmpty(q)) {
-        throw std::underflow_error("queue kosong, elemen depan not found");
+        throw std::runtime_error("Queue empty");
     }
     return *(q->front);
 }
 
 int back(const Queue* q) {
     if (isEmpty(q)) {
-        throw std::underflow_error("queue kosong, elemen belakang not found");
+        throw std::runtime_error("Queue empty");
     }
     return *(q->rear);
 }
