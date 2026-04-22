@@ -2,8 +2,8 @@
 #include <stdexcept>
 
 void init(Queue* q) {
-    q->front = q->data;
-    q->rear  = q->data - 1;
+    q->front = 0;
+    *q->rear = -1;
 }
 
 bool isEmpty(const Queue* q) {
@@ -11,15 +11,15 @@ bool isEmpty(const Queue* q) {
 }
 
 bool isFull(const Queue* q) {
-    return q->rear >= q->data + MAX - 1;
+    return *q->rear == MAX - 1;
 }
 
 void enqueue(Queue* q, int value) {
     if (isFull(q)) {
         throw std::overflow_error("queue penuh, cannot enqueue");
     }
-    q->rear++;
-    *(q->rear) = value;
+    (*q->rear)++;
+    q->data[*q->rear] = value;
 }
 
 void dequeue(Queue* q) {
@@ -33,12 +33,12 @@ int front(const Queue* q) {
     if (isEmpty(q)) {
         throw std::underflow_error("queue kosong, elemen depan not found");
     }
-    return *(q->front);
+    return q->data[*q->front];
 }
 
 int back(const Queue* q) {
     if (isEmpty(q)) {
         throw std::underflow_error("queue kosong, elemen belakang not found");
     }
-    return *(q->rear);
+    return q->data[*q->rear];
 }
