@@ -1,4 +1,5 @@
 #include "queue.h"
+#include <stdexcept>
 
 void init(Queue* q) {
     q->front = q->data;
@@ -15,7 +16,7 @@ bool isFull(const Queue* q) {
 
 void enqueue(Queue* q, int value) {
     if (isFull(q)) {
-        throw "queue penuh, cannot enqueue";
+        throw std::overflow_error("queue penuh, cannot enqueue");
     }
     q->rear++;
     *(q->rear) = value;
@@ -23,21 +24,21 @@ void enqueue(Queue* q, int value) {
 
 void dequeue(Queue* q) {
     if (isEmpty(q)) {
-        throw "queue kosong, cannot dequeue";
+        throw std::underflow_error("queue kosong, cannot dequeue");
     }
     q->front++;
 }
 
 int front(const Queue* q) {
     if (isEmpty(q)) {
-        throw "queue kosong, elemen depan not found";
+        throw std::underflow_error("queue kosong, elemen depan not found");
     }
     return *(q->front);
 }
 
 int back(const Queue* q) {
     if (isEmpty(q)) {
-        throw "queue kosong, elemen belakang not found";
+        throw std::underflow_error("queue kosong, elemen belakang not found");
     }
     return *(q->rear);
 }
