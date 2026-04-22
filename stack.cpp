@@ -1,4 +1,5 @@
 #include "stack.h"
+#include <stdexcept>
 
 void init(Stack* s) {
     s->top = s->data - 1;
@@ -14,7 +15,7 @@ bool isFull(const Stack* s) {
 
 void push(Stack* s, int value) {
     if (isFull(s)) {
-        throw "stack penuh, tidak bisa push";
+        throw std::overflow_error("Stack penuh, tidak bisa push");
     }
     s->top++;
     *(s->top) = value;
@@ -22,14 +23,14 @@ void push(Stack* s, int value) {
 
 void pop(Stack* s) {
     if (isEmpty(s)) {
-        throw "stack kosong, tidak bisa pop";
+        throw std::underflow_error("Stack kosong, tidak bisa pop");
     }
     s->top--;
 }
 
 int peek(const Stack* s) {
     if (isEmpty(s)) {
-        throw "stack kosong, tidak ada elemen";
+        throw std::underflow_error("Stack kosong, tidak ada elemen");
     }
     return *(s->top);
 }

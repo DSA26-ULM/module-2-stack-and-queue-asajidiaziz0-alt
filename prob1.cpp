@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
+#include <stdexcept>
 #include "stack.h"
-#include "stack.cpp"
 
 int main() {
     int n;
@@ -28,7 +28,6 @@ int main() {
 
                 push(&s, hasil);
             }
-
             else {
                 int angka = std::stoi(A);
                 push(&s, angka);
@@ -36,8 +35,12 @@ int main() {
         }
         std::cout << peek(&s) << std::endl;
 
-    } catch (const char* msg) {
-        std::cout << "error: " << msg << std::endl;
+    } catch (const std::overflow_error& e) {
+        std::cout << "error: " << e.what() << std::endl;
+    } catch (const std::underflow_error& e) {
+        std::cout << "error: " << e.what() << std::endl;
+    } catch (const std::exception& e) {
+        std::cout << "error: " << e.what() << std::endl;
     }
 
     return 0;
