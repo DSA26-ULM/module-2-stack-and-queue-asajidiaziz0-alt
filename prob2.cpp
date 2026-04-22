@@ -1,6 +1,5 @@
 #include <iostream>
 #include "queue.h"
-#include "queue.cpp"
 
 int main() {
     int n, k;
