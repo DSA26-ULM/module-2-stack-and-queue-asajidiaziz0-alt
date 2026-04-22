@@ -11,7 +11,7 @@ bool isEmpty(const Queue* q) {
 }
 
 bool isFull(const Queue* q) {
-    return q->rear >= q->data + MAX - 1;
+    return q->rear == q->data + MAX - 1;
 }
 
 void enqueue(Queue* q, int value) {
